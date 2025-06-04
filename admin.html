@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Data Masukan User</title>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "API_KEY_LU",
+      authDomain: "PROJECT_ID.firebaseapp.com",
+      databaseURL: "https://PROJECT_ID.firebaseio.com",
+      projectId: "PROJECT_ID",
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
+</head>
+<body>
+  <h2>Data Kode Masuk</h2>
+  <ul id="listData"></ul>
+
+  <script>
+    const db = firebase.database();
+    const list = document.getElementById('listData');
+
+    db.ref('input').on('value', snapshot => {
+      list.innerHTML = '';
+      snapshot.forEach(child => {
+        const data = child.val();
+        const li = document.createElement('li');
+        li.textContent = `User: ${data.user} - Kode: ${data.kode}`;
+        list.appendChild(li);
+      });
+    });
+  </script>
+</body>
+</html>

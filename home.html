@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Input Kode</title>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "API_KEY_LU",
+      authDomain: "PROJECT_ID.firebaseapp.com",
+      databaseURL: "https://PROJECT_ID.firebaseio.com",
+      projectId: "PROJECT_ID",
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
+</head>
+<body>
+  <h2>Masukin Kode</h2>
+  <input type="text" id="kodeInput">
+  <button onclick="kirim()">Kirim</button>
+  <button onclick="logout()">Logout</button>
+
+  <script>
+    const auth = firebase.auth();
+    const db = firebase.database();
+
+    function kirim() {
+      const user = auth.currentUser;
+      const kode = document.getElementById('kodeInput').value;
+      if (user) {
+        const waktu = Date.now();
+        db.ref('input/' + waktu).set({
+          user: user.email,
+          kode: kode
+        });
+        alert('Terkirim!');
+        document.getElementById('kodeInput').value = '';
+      }
+    }
+
+    function logout() {
+      auth.signOut().then(() => window.location.href = 'index.html');
+    }
+  </script>
+</body>
+</html>
